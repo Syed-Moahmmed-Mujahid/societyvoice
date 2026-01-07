@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Society Voice</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="societyvioce png logo.png">
+</head>
+<body>
+    <img src="jezael-melgoza-2FiXtdnVhjQ-unsplash.jpg" id="login-bg" alt="Background Image">
+    
+  <div id="homeView">
+    <div class="home-container">
+      <div class="home-content">
+        <img src="society-concept-illustration_1284-8297.jpg" alt="Picture of Societies" class="society-home-picture">
+        <div id="homeGuest">
+          <h1 class="home-title">Welcome to SocietyVoice</h1>
+          <p class="home-subtitle">"Connect. Manage. Resolve."</p>
+          <button type="button" class="btn" onclick="showLogin()">Login to Your Society</button>
+        </div>
+        <div id="homeUser" class="hidden">
+          <h1 class="home-title">Welcome back! <span id="homeName"></span>!</h1>
+          <p class="home-subtitle">Role: <span id="homeRole"></span></p>
+          <button type="button" class="btn" onclick="showDashboard()">Go to Dashboard</button>
+          <button type="button" class="btn btn-danger" onclick="logout()" style="margin-left: 1rem;">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="loginView" class="hidden">
+    <div class="auth-container">
+      <div class="auth-box">
+        <div class="auth-header">
+          <h2>Login to Your Society</h2>
+        </div>
+        <form id="loginForm">
+          <div class="form-group">
+            <label>Email</label>
+            <input id="loginEmail" type="email" required placeholder="Enter your email">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <div class="password-wrapper">
+                <input id="loginPassword" type="password" required placeholder="Enter your password">
+                <button type="button" class="toggle-password-btn" onclick="togglePassword('loginPassword', this)">👁️</button>
+            </div>
+          </div>
+          <input type="hidden" id="loginRole" value="resident">
+          <button type="submit" class="btn">Login</button>
+          <div id="loginMsg"></div>
+        </form>
+        
+        <div class="auth-links">
+          <p><a href="#" class="link" onclick="showAdminLogin()">Admin/Worker Login</a></p>
+          <p><a href="#" class="link" onclick="showRegister()">Need an account? Register as Resident</a></p>
+          <p><a href="#" class="link" onclick="showHome()">Back to Home</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="adminLoginView" class="hidden">
+    <div class="auth-container">
+      <div class="auth-box">
+        <div class="auth-header">
+          <h2>Admin/Worker Login</h2>
+        </div>
+        <form id="adminLoginForm">
+          <div class="form-group">
+            <label>Email</label>
+            <input id="adminLoginEmail" type="email" required placeholder="Enter admin/worker email">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <div class="password-wrapper">
+                <input id="adminLoginPassword" type="password" required placeholder="Enter password">
+                <button type="button" class="toggle-password-btn" onclick="togglePassword('adminLoginPassword', this)">👁️</button>
+            </div>
+          </div>
+          <input type="hidden" id="adminLoginRole" value="admin">
+          <button type="submit" class="btn">Login</button>
+          <div id="adminLoginMsg"></div>
+        </form>
+        
+        <div class="auth-links">
+          <p><a href="#" class="link" onclick="showLogin()">Back to Resident Login</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="registerView" class="hidden">
+    <div class="auth-container">
+      <div class="auth-box">
+        <div class="auth-header">
+          <h2>Register for an Account</h2>
+          <p>Fill out the form to request a new resident account. An admin will review your request.</p>
+        </div>
+        <form id="registerForm">
+          <div class="form-group">
+            <label>Name</label>
+            <input id="regName" type="text" required placeholder="Your full name">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input id="regEmail" type="email" required placeholder="Your email">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <div class="password-wrapper">
+                <input id="regPassword" type="password" required placeholder="Set your password">
+                <button type="button" class="toggle-password-btn" onclick="togglePassword('regPassword', this)">👁️</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>House Number</label>
+            <input id="regHouseNumber" type="text" required placeholder="Your house/flat number (e.g., A-101)">
+          </div>
+          <input type="hidden" id="regRole" value="resident">
+          <button type="submit" class="btn">Request Account</button>
+          <div id="regMsg"></div>
+        </form>
+        
+        <div class="auth-links">
+          <p><a href="#" class="link" onclick="showHome()">Back to Home</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="dashboard" class="hidden">
+    <div class="header">
+      <h1>Society Voice Dashboard</h1>
+      <div class="user-info">
+        <button type="button" class="about-btn" onclick="showAboutUs()" title="Meet the Team">👨‍💻 Developers</button>
+        <button id="themeToggle" class="theme-btn" onclick="toggleTheme()" title="Toggle Dark Mode">☀️</button>
+        <span>Welcome, <span id="userName"></span>! <span id="userHouse" class="house-badge"></span></span>
+        <button type="button" class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </div>
+    
+    <div class="main-container">
+      <div class="sidebar">
+        
+        <nav id="residentNav" class="hidden">
+          <p class="nav-section">Resident Menu</p>
+          <a class="nav-item active" onclick="showSection('submit-complaint')">Submit Complaint</a>
+          <a class="nav-item" onclick="showSection('my-complaints')">My Complaints</a>
+          <a class="nav-item" onclick="showSection('all-complaints')">All Complaints</a>
+          <a class="nav-item" onclick="showSection('society-polls')">Society Polls</a>
+          <a class="nav-item" onclick="showSection('payment-section')">Maintenance Payments</a>
+          <p class="nav-section">Account</p>
+          <a class="nav-item" onclick="showSection('change-password')">Change Password</a>
+          <a class="nav-item" onclick="showSection('change-house-number')">Change House Number</a>
+        </nav>
+
+        <nav id="workerNav" class="hidden">
+          <p class="nav-section">Worker Dashboard</p>
+          <a class="nav-item" onclick="showSection('admin-complaints', false, true)">Society Complaints</a> <a class="nav-item" onclick="showSection('society-polls', false, true)">View Polls</a>
+          <p class="nav-section">Account</p>
+          <a class="nav-item" onclick="showSection('change-password')">Change Password</a>
+        </nav>
+
+        <nav id="adminNav" class="hidden">
+          <p class="nav-section">Admin Menu</p>
+          <a class="nav-item" onclick="showSection('admin-complaints', true, false)">My Society Complaints</a>
+          <a class="nav-item" onclick="showSection('admin-payments')">Manage Payments</a>
+          <a class="nav-item" onclick="showSection('admin-polls')">Manage Polls</a>
+          <a class="nav-item" onclick="showSection('manage-alerts')">Manage Alerts</a>
+          <p class="nav-section">Users</p>
+          <a class="nav-item" onclick="showSection('user-management')">User Management</a>
+          <a class="nav-item" onclick="showSection('registration-requests')">Registration Requests</a>
+          <a class="nav-item" onclick="showSection('house-change-requests')">House Change Requests</a>
+          <p class="nav-section">Account</p>
+          <a class="nav-item" onclick="showSection('change-password')">Change Password</a>
+        </nav>
+
+      </div>
+      <main class="content-area">
+        <div id="residentAlertsContainer"></div>
+        
+        <div id="submit-complaint" class="content-section active">
+          <div class="content-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h2>Submit a New Complaint</h2>
+            <button type="button" class="btn btn-small" id="aiModeButton" onclick="showAiModal()">AI Mode 🤖</button>
+          </div>
+          <div class="form-container">
+            <form id="complaintForm">
+              <div class="form-group">
+                <label for="complaintTitle">Title</label>
+                <input id="complaintTitle" type="text" required placeholder="A brief summary of the issue">
+              </div>
+              <div class="form-group">
+                <label for="complaintCategory">Category</label>
+                <select id="complaintCategory" required>
+                  <option value="">Select Category</option>
+                  <option value="Water Supply">Water Supply</option>
+                  <option value="Electricity/Power">Electricity/Power</option>
+                  <option value="Security">Security</option>
+                  <option value="Maintenance">Maintenance</option>
+                  <option value="Common Area">Common Area</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="complaintDescription">Description</label>
+                <textarea id="complaintDescription" required placeholder="Describe the issue in detail"></textarea>
+              </div>
+              <div class="form-group">
+                  <label for="complaintImage">Upload Image (Optional)</label>
+                  <input id="complaintImage" type="file" accept="image/png, image/jpeg, image/gif">
+                  <div id="imagePreview"></div>
+              </div>
+              <button type="submit" class="btn">Submit Complaint</button>
+              <div id="complaintMsg"></div>
+            </form>
+          </div>
+        </div>
+
+        <div id="payment-section" class="content-section">
+            <div class="content-header">
+                <h2>Make Payment</h2>
+            </div>
+            
+            <div class="form-container">
+                <form id="paymentForm">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group" style="flex: 1;">
+                            <label>Resident Name</label>
+                            <input type="text" id="payName" readonly style="background-color: #e9ecef;">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>House Number</label>
+                            <input type="text" id="payHouse" readonly style="background-color: #e9ecef;">
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="payType">Payment Type</label>
+                        <select id="payType" required onchange="togglePaymentDescription()">
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group hidden" id="payDescriptionContainer">
+                        <label for="payDescription">Description (Required for 'Other')</label>
+                        <textarea id="payDescription" placeholder="Please specify details about this payment (e.g., Penalty, Event Donation)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="payAmount">Amount (₹)</label>
+                        <input id="payAmount" type="number" required placeholder="Enter amount paid">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="payUTR">UTR / Transaction Number</label>
+                        <input id="payUTR" type="text" required placeholder="e.g., UPI1234567890">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="payDate">Payment Date & Time</label>
+                        <input id="payDate" type="datetime-local" required>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="payScreenshot">Upload Payment Screenshot</label>
+                        <input id="payScreenshot" type="file" accept="image/*" required>
+                        <p class="form-helper-text">Please upload a clear screenshot of the successful transaction.</p>
+                    </div>
+    
+                    <button type="submit" class="btn">Submit Payment Details</button>
+                    <div id="paymentMsg"></div>
+                </form>
+            </div>
+    
+            <div class="content-header" style="margin-top: 3rem;">
+                <h2>My Payment History</h2>
+            </div>
+            <div id="myPaymentList" class="list-container"></div>
+        </div>
+
+        <div id="admin-payments" class="content-section">
+          <div class="content-header">
+            <h2>Society Maintenance Payments</h2>
+          </div>
+          <div style="margin-bottom: 1rem;">
+             <p>Review and verify maintenance payments submitted by residents.</p>
+          </div>
+          <div id="adminPaymentList" class="list-container"></div>
+        </div>
+        
+        <div id="my-complaints" class="content-section">
+          <div class="content-header">
+            <h2>My Submitted Complaints</h2>
+          </div>
+          <div id="myComplaintList" class="list-container"></div>
+        </div>
+        
+        <div id="all-complaints" class="content-section">
+          <div class="content-header">
+            <h2>All Society Complaints</h2>
+          </div>
+          <div style="display: flex; align-items: flex-end; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+            <div class="form-group" style="flex-grow: 1; min-width: 200px; margin-bottom: 0;">
+             <label for="categoryFilter">Filter by Category:</label>
+             <select id="categoryFilter" class="status-dropdown" onchange="applyCategoryFilter()">
+               <option value="all">All Categories</option>
+               <option value="Water Supply">Water Supply</option>
+               <option value="Electricity/Power">Electricity/Power</option>
+               <option value="Security">Security</option>
+               <option value="Maintenance">Maintenance</option>
+               <option value="Common Area">Common Area</option>
+               <option value="Other">Other</option>
+             </select>
+           </div>
+           <div class="form-group" style="flex-grow: 1; min-width: 200px; margin-bottom: 0;">
+             <label for="statusFilter">Filter by Status:</label>
+             <select id="statusFilter" class="status-dropdown" onchange="applyCategoryFilter()">
+               <option value="all">All Statuses</option>
+               <option value="Open">Open</option>
+               <option value="in-progress">In Progress</option>
+               <option value="resolved">Resolved</option>
+             </select>
+           </div>
+           <div class="form-group" style="flex-grow: 1; min-width: 200px; margin-bottom: 0;">
+             <label for="dateFilter">Filter by Date:</label>
+             <input type="date" id="dateFilter" class="status-dropdown" onchange="applyCategoryFilter()">
+           </div>
+           <div class="form-group" style="flex-grow: 1; min-width: 200px; margin-bottom: 0;">
+             <label for="houseFilter">Filter by House No:</label>
+             <input type="text" id="houseFilter" class="status-dropdown" onkeyup="applyCategoryFilter()" placeholder="e.g., A-101">
+           </div>
+          </div>
+          <div id="allComplaintList" class="list-container"></div>
+        </div>
+        
+        <div id="admin-complaints" class="content-section">
+          <div class="content-header">
+            <h2 id="adminComplaintHeader">Admin/Worker Complaint Dashboard</h2>
+          </div>
+           <div style="display: flex; align-items: flex-end; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+               <div class="form-group" style="flex-grow: 1; min-width: 200px; margin-bottom: 0;">
+                <label for="adminCategoryFilter">Filter by Category:</label>
+                <select id="adminCategoryFilter" class="status-dropdown" onchange="applyAdminCategoryFilter()">
+                  <option value="all">All Categories</option>
+                  <option value="Water Supply">Water Supply</option>
+                  <option value="Electricity/Power">Electricity/Power</option>
+                  <option value="Security">Security</option>
+                  <option value="Maintenance">Maintenance</option>
+                  <option value="Common Area">Common Area</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group" style="flex-grow: 1; min-width: 200px; margin-bottom: 0;">
+                <label for="adminStatusFilter">Filter by Status:</label>
+                <select id="adminStatusFilter" class="status-dropdown" onchange="applyAdminCategoryFilter()">
+                  <option value="all">All Statuses</option>
+                  <option value="Open">Open</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="resolved">Resolved</option>
+                </select>
+              </div>
+              <div class="form-group" style="flex-grow: 1; min-width: 200px; margin-bottom: 0;">
+                <label for="adminDateFilter">Filter by Date:</label>
+                <input type="date" id="adminDateFilter" class="status-dropdown" onchange="applyAdminCategoryFilter()">
+              </div>
+              <div class="form-group" style="flex-grow: 1; min-width: 200px; margin-bottom: 0;">
+                <label for="adminHouseFilter">Filter by House No:</label>
+                <input type="text" id="adminHouseFilter" class="status-dropdown" onkeyup="applyAdminCategoryFilter()" placeholder="e.g., A-101">
+              </div>
+           </div>
+          <div id="adminComplaintList" class="list-container"></div>
+        </div>
+
+        <div id="society-polls" class="content-section">
+          <div class="content-header">
+            <h2>Society Polls</h2>
+          </div>
+          <div id="pollList" class="list-container"></div>
+        </div>
+
+        <div id="admin-polls" class="content-section">
+          <div class="content-header">
+            <h2>Poll Management</h2>
+            <div class="view-switch-buttons">
+              <button type="button" class="btn btn-sm" id="viewPollsBtn" onclick="showAdminPollView('list')">View Polls</button>
+              <button type="button" class="btn btn-sm" id="createPollBtn" onclick="showAdminPollView('create')">Create New Poll</button>
+            </div>
+          </div>
+          
+          <div id="adminPollListView" class="admin-poll-view">
+            <h3>Active Polls</h3>
+            <div id="adminPollList" class="list-container"></div>
+          </div>
+          
+          <div id="adminPollCreateView" class="admin-poll-view hidden">
+            <div class="form-container">
+              <form id="createPollForm">
+                <div class="form-group">
+                  <label for="pollQuestionInput">Poll Question</label>
+                  <input id="pollQuestionInput" type="text" required placeholder="e.g., Should we allow pets in the main garden?">
+                </div>
+                <div class="form-group">
+                  <label for="pollDescriptionInput">Description (Optional)</label>
+                  <textarea id="pollDescriptionInput" placeholder="Provide context or rules for the poll"></textarea>
+                </div>
+                <p class="form-helper-text">Poll options will be automatically set to "Yes" and "No."</p>
+                <button type="submit" class="btn">Create Poll</button>
+                <div id="createPollMsg"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div id="user-management" class="content-section">
+          <div class="content-header">
+            <h2>User Management</h2>
+          </div>
+          <div class="form-container">
+            <h3>Add New User</h3>
+            <form id="addUserForm">
+              <div class="form-group">
+                <label for="addUserName">Name</label>
+                <input id="addUserName" type="text" required placeholder="Full Name">
+              </div>
+              <div class="form-group">
+                <label for="addUserEmail">Email</label>
+                <input id="addUserEmail" type="email" required placeholder="Email Address">
+              </div>
+              <div class="form-group">
+                <label for="addUserPassword">Initial Password</label>
+                <input id="addUserPassword" type="password" required placeholder="Set temporary password">
+              </div>
+              <div class="form-group">
+                <label for="addUserRole">Role</label>
+                <select id="addUserRole" required>
+                  <option value="resident">Resident</option>
+                  <option value="worker">Worker</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="addUserHouseNumber">House/Flat Number (Required for Resident)</label>
+                <input id="addUserHouseNumber" type="text" placeholder="e.g., A-101">
+              </div>
+              <button type="submit" class="btn">Add User</button>
+              <div id="addUserMsg"></div>
+            </form>
+          </div>
+          
+          <div class="content-header" style="margin-top: 2rem;">
+            <h3>Manage Existing Users</h3>
+          </div>
+          <div id="userList" class="list-container"></div>
+        </div>
+
+        <div id="registration-requests" class="content-section">
+          <div class="content-header">
+            <h2>Registration Requests</h2>
+          </div>
+          <div id="registrationRequestsList" class="list-container"></div>
+        </div>
+
+        <div id="house-change-requests" class="content-section">
+          <div class="content-header">
+            <h2>House Number Change Requests</h2>
+          </div>
+          <div id="houseChangeRequestsList" class="list-container"></div>
+        </div>
+
+        <div id="manage-alerts" class="content-section">
+          <div class="content-header">
+            <h2>Manage Society Alerts</h2>
+          </div>
+          <div class="form-container">
+            <h3>Create New Alert</h3>
+            <p>This message will be displayed prominently to all residents on their dashboard.</p>
+            <form id="createAlertForm">
+              <div class="form-group">
+                <label for="alertMessage">Alert Message</label>
+                <textarea id="alertMessage" required placeholder="e.g., Water supply will be unavailable from 10 AM to 2 PM tomorrow."></textarea>
+              </div>
+              <button type="submit" class="btn">Post Alert</button>
+              <div id="createAlertMsg"></div>
+            </form>
+          </div>
+          
+          <div class="content-header" style="margin-top: 2rem;">
+            <h3>Current Alerts</h3>
+          </div>
+          <div id="adminAlertList" class="list-container"></div>
+        </div>
+        
+        <div id="change-password" class="content-section">
+          <div class="content-header">
+            <h2>Change Password</h2>
+          </div>
+          <div class="form-container">
+            <form id="changePasswordForm">
+              <div class="form-group">
+                <label for="currentPassword">Current Password</label>
+                <div class="password-wrapper">
+                    <input id="currentPassword" type="password" required>
+                    <button type="button" class="toggle-password-btn" onclick="togglePassword('currentPassword', this)">👁️</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <div class="password-wrapper">
+                    <input id="newPassword" type="password" required>
+                    <button type="button" class="toggle-password-btn" onclick="togglePassword('newPassword', this)">👁️</button>
+                </div>
+              </div>
+              <button type="submit" class="btn">Update Password</button>
+              <div id="passwordMsg"></div>
+            </form>
+          </div>
+        </div>
+
+        <div id="change-house-number" class="content-section">
+          <div class="content-header">
+            <h2>Request House Number Change</h2>
+          </div>
+          <div class="form-container">
+            <p>Your current house number is: <strong id="currentHouseNumberDisplay"></strong></p>
+            <p>If this is incorrect, you can request a change below. An admin will need to approve your request.</p>
+            <form id="changeHouseNumberForm">
+              <div class="form-group">
+                <label for="newHouseNumber">New House/Flat Number</label>
+                <input id="newHouseNumber" type="text" required placeholder="e.g., B-204">
+              </div>
+              <button type="submit" class="btn">Request Change</button>
+              <div id="houseChangeMsg"></div>
+            </form>
+          </div>
+        </div>
+
+        <div id="aiModeModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>AI Complaint Assistant</h2>
+                    <span class="close-button" onclick="closeAiModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>Search complaints or ask the AI to summarize/analyze them.</p>
+                    <textarea id="aiInputArea" rows="5" placeholder="Search a complaint (e.g., 'leaking taps') or ask the AI to find trends (e.g., 'show all unresolved plumbing complaints from October')."></textarea>
+                    <div id="aiResponseArea" class="message info" style="margin-top: 1rem; display: none;">AI Response will appear here.</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-small" id="aiSearchButton">Search/Analyze</button>
+                    <button type="button" class="btn btn-danger btn-small" onclick="closeAiModal()">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="aboutUsModal" class="modal hidden">
+            <div class="modal-content about-us-content">
+                <div class="modal-header">
+                    <h2>Meet the Developers</h2>
+                    <span class="close-button" onclick="closeAboutUs()">&times;</span>
+                </div>
+                <div class="modal-body">
+                   <div class="team-grid">
+                       <div class="team-card">
+                           <img src="3VC22IS060_MUJAHID_ISE.jpg" alt="Team Member" class="team-photo">
+                           <h3 class="team-name">Syed Mohammed Mujahid</h3>
+                           <p class="team-info">Role: Project Manager / Full-Stack Developer</p>
+                           <p class="team-info">Rao Bahadur Y. Mahabaleswarappa Engineering College</p>
+                           <p class="team-info">USN:3VC22IS060</p>
+                           <p class="team-info">📧 mujahid.ise.rymec@gmail.com</p>
+                           <div class="team-links">
+                               <a href="http://linkedin.com/in/mohammed-mujahid-56b63331a" target="_blank" class="social-link" title="LinkedIn">
+                                   <span class="linkedin-icon">in</span> LinkedIn
+                               </a>
+                               <a href="https://mujhaid-portfolio.vercel.app/" target="_blank" class="portfolio-link">📃Portfolio</a>
+                           </div>
+                       </div>
+                       <div class="team-card">
+                           <img src="3VC22IS048_RACHITH_ISE.JPG" alt="Team Member" class="team-photo">
+                           <h3 class="team-name">Rachit Kumar Nag</h3>
+                           <p class="team-info">Role:  Backend Developer / Quality Assurance Engineer</p>
+                           <p class="team-info">Rao Bahadur Y. Mahabaleswarappa Engineering College</p>
+                           <p class="team-info">USN:3VC22IS048</p>
+                           <p class="team-info">📧 rachit.ise.rymec@gmail.com</p>
+                           <div class="team-links">
+                               <a href="http://linkedin.com/in/rachit-nag-a35035271" target="_blank" class="social-link" title="LinkedIn">
+                                   <span class="linkedin-icon">in</span> LinkedIn
+                               </a>
+                               <a href="RACHIT CV.pdf" target="_blank" class="portfolio-link">📃 Resume</a>
+                           </div>
+                       </div>
+                       <div class="team-card">
+                           <img src="3VC22IS040_ISMAIL_ISE.jpg" alt="Team Member" class="team-photo">
+                           <h3 class="team-name">Mohammed Ismail</h3>
+                           <p class="team-info">Role: Frontend Developer/UI-UX Designer</p>
+                           <p class="team-info">Rao Bahadur Y. Mahabaleswarappa Engineering College</p>
+                           <p class="team-info">USN:3VC22IS040</p>
+                           <p class="team-info">📧 ismail.ise.rymec@gmail.com</p>
+                           <div class="team-links">
+                               <a href="http://linkedin.com/in/md-ismailll" target="_blank" class="social-link" title="LinkedIn">
+                                   <span class="linkedin-icon">in</span> LinkedIn
+                               </a>
+                               <a href="https://mohammed-ismail-pearl-delta.vercel.app/#contact" target="_blank" class="portfolio-link">📃Portfolio</a>
+                           </div>
+                       </div>
+                       <div class="team-card">
+                           <img src="3VC22IS016_DEEPAK YADAV_ISE.jpg" alt="Team Member" class="team-photo">
+                           <h3 class="team-name">Deepak Yadav</h3>
+                           <p class="team-info">Role: Security Lead / Database Administrator</p>
+                           <p class="team-info">Rao Bahadur Y. Mahabaleswarappa Engineering College</p>
+                           <p class="team-info">USN:3VC22IS016</p>
+                           <p class="team-info">📧 deepak.ise.rymec@gmail.com</p>
+                           <div class="team-links">
+                               <a href="http://linkedin.com/in/deepak-yadav-172a4a312" target="_blank" class="social-link" title="LinkedIn">
+                                   <span class="linkedin-icon">in</span> LinkedIn
+                               </a>
+                               <a href="DEEPAK-ISE-3VC22IS016 (1).pdf" target="_blank" class="portfolio-link">📃 Resume</a>
+                           </div>
+                       </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="dashboard-footer">
+            <p>&copy; 2025 SocietyVoice. All rights reserved.</p>
+        </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
