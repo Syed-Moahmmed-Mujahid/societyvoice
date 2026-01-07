@@ -6,14 +6,6 @@ import os
 import secrets
 from werkzeug.utils import secure_filename
 import json
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route("/")
-def home():
-    return "SocietyVoice backend is running"
-
 
 app = Flask(__name__)
 CORS(app)
@@ -910,3 +902,4 @@ def hide_payment():
 if __name__ == "__main__":
 
     app.run(debug=True)
+
